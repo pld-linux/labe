@@ -1,12 +1,11 @@
 %define		_subver	2
 Summary:	LABE stands for Ldap Address Book Editor.
-Summary(pl):	___FIXME___
+Summary(pl):	LABE jest edytorem ksi±¿ki adresowej LDAP.
 Name:		labe
 Version:	3.3
 Release:	0.%{_subver}.1
 License:	GPL
-Group:		Multimedia
-######		Unknown group!
+Group:		Applications/Databases
 Source0:	http://www.savoirfairelinux.com/%{name}/%{name}-%{version}-%{_subver}.tgz
 # Source0-md5:	f7b1adfe0c0194403279d16b96f51d31
 Source1:	%{name}-httpd.conf
@@ -14,6 +13,8 @@ Patch0:		%{name}-destdir.patch
 URL:		http://www.savoirfairelinux.com/labe/
 BuildArch:	noarch
 Requires:	openldap
+Requires:	php-ldap
+Requires:	php-pcre
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 
@@ -59,7 +60,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}/inc
 %{_datadir}/%{name}/lang
 %{_datadir}/%{name}/templates
-%{_datadir}/%{name}/templates_c
+%dir %attr(755,http,root) %{_datadir}/%{name}/templates_c
 %{_datadir}/%{name}/index.php
 %attr(755,root,root) %{_datadir}/%{name}/setup.sh
 %attr(755,root,root) %{_datadir}/%{name}/restore_old_configs.sh
