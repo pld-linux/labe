@@ -36,6 +36,7 @@ katalogiem LDAP, kompatybilnego z Mozill±, Evolution i Outlookiem.
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/httpd/httpd.conf,%{_datadir}/openldap/schema}
 
 %{__make} create_dir \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -45,7 +46,6 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT \
 	ROOT=%{_datadir}
 
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/httpd/httpd.conf,%{_datadir}/openldap/schema}
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/httpd.conf/99_%{name}.conf
 install %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/%{name}/lang/pl.inc
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/uninstall.sh $RPM_BUILD_ROOT%{_datadir}/%{name}/restore_old_configs.sh
