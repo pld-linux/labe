@@ -1,0 +1,23 @@
+--- labe-3.3-2/inc/Options.php.fix	2004-08-12 19:52:28.909197624 +0200
++++ labe-3.3-2/inc/Options.php	2004-08-12 19:53:53.172387672 +0200
+@@ -62,6 +62,10 @@
+ 		$language = "es";
+ 		$smarty->assign("ES"," Selected ");
+ 		break;
++	    case "pl":
++		$language = "pl";
++		$smarty->assign("PL"," Selected ");
++		break;
+             default:
+                 $language = "en";
+ 		$smarty->assign("EN"," Selected ");
+--- labe-3.3-2/templates/options.tpl.fix	2004-08-12 19:48:58.384202288 +0200
++++ labe-3.3-2/templates/options.tpl	2004-08-12 19:50:56.324272672 +0200
+@@ -90,6 +90,7 @@
+ 			    <option {$EN}   value="en">English</option>
+ 			    <option {$FR}   value="fr">Francais</option>
+ 			    <option {$ES}   value="es">Español</option>
++			    <option {$PL}   value="pl">Polish</option>
+ 			</select>
+ 		    </td>
+ 		</tr>
