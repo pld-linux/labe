@@ -3,13 +3,16 @@ Summary:	LABE stands for Ldap Address Book Editor
 Summary(pl):	LABE jest edytorem ksi±¿ki adresowej LDAP
 Name:		labe
 Version:	3.3
-Release:	0.%{_subver}.1
+Release:	0.%{_subver}.2
 License:	GPL
 Group:		Applications/Databases
 Source0:	http://www.savoirfairelinux.com/%{name}/%{name}-%{version}-%{_subver}.tgz
 # Source0-md5:	f7b1adfe0c0194403279d16b96f51d31
 Source1:	%{name}-httpd.conf
+Source2:	%{name}-pl.inc
 Patch0:		%{name}-destdir.patch
+Patch1:		%{name}-pl.patch
+Patch2:		%{name}-path.patch
 URL:		http://www.savoirfairelinux.com/labe/
 BuildArch:	noarch
 Requires:	openldap
@@ -28,6 +31,8 @@ katalogiem LDAP, kompatybilnego z Mozill±, Evolution i Outlookiem.
 %prep
 %setup -q -n %{name}-%{version}-%{_subver}
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -40,10 +45,11 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT \
 	ROOT=%{_datadir}
 
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/httpd/httpd.conf
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/httpd/httpd.conf,%{_datadir}/openldap/schema}
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/httpd.conf/99_%{name}.conf
-
+install %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/%{name}/lang/pl.inc
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/uninstall.sh $RPM_BUILD_ROOT%{_datadir}/%{name}/restore_old_configs.sh
+mv $RPM_BUILD_ROOT%{_sysconfdir}/openldap/schema/extension.schema $RPM_BUILD_ROOT%{_datadir}/openldap/schema/extension.schema
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -52,7 +58,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc doc/CHANGELOG doc/README doc/TODO
 %{_sysconfdir}/%{name}
-%{_sysconfdir}/openldap/schema/extension.schema
+%{_datadir}/openldap/schema/extension.schema
 %{_sysconfdir}/httpd/httpd.conf/99_%{name}.conf
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/class
