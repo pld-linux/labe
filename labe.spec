@@ -36,7 +36,7 @@ katalogiem LDAP, kompatybilnego z Mozill±, Evolution i Outlookiem.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sysconfdir}/httpd/httpd.conf,%{_datadir}/openldap/schema}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/httpd,%{_datadir}/openldap/schema}
 
 %{__make} create_dir \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -46,7 +46,7 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/httpd/httpd.conf,%{_datadir}/openldap/
 	DESTDIR=$RPM_BUILD_ROOT \
 	ROOT=%{_datadir}
 
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/httpd.conf/99_%{name}.conf
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/%{name}.conf
 install %{SOURCE2} $RPM_BUILD_ROOT%{_datadir}/%{name}/lang/pl.inc
 mv $RPM_BUILD_ROOT%{_datadir}/%{name}/uninstall.sh $RPM_BUILD_ROOT%{_datadir}/%{name}/restore_old_configs.sh
 mv $RPM_BUILD_ROOT%{_sysconfdir}/openldap/schema/extension.schema $RPM_BUILD_ROOT%{_datadir}/openldap/schema/extension.schema
@@ -54,13 +54,41 @@ mv $RPM_BUILD_ROOT%{_sysconfdir}/openldap/schema/extension.schema $RPM_BUILD_ROO
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+if [ -f /etc/httpd/httpd.conf ] && ! grep -q "^Include.*%{name}.conf" /etc/httpd/httpd.conf; then
+	echo "Include /etc/httpd/%{name}.conf" >> /etc/httpd/httpd.conf
+	if [ -f /var/lock/subsys/httpd ]; then
+		/usr/sbin/apachectl restart 1>&2
+	fi
+elif [ -d /etc/httpd/httpd.conf ]; then
+	ln -sf /etc/httpd/%{name}.conf /etc/httpd/httpd.conf/99_%{name}.conf
+	if [ -f /var/lock/subsys/httpd ]; then
+		/usr/sbin/apachectl restart 1>&2
+	fi
+fi
+
+%preun
+if [ "$1" = "0" ]; then
+	umask 027
+	if [ -d /etc/httpd/httpd.conf ]; then
+		rm -f /etc/httpd/httpd.conf/99_%{name}.conf
+	else
+		grep -v "^Include.*%{name}.conf" /etc/httpd/httpd.conf > \
+			/etc/httpd/httpd.conf.tmp
+		mv -f /etc/httpd/httpd.conf.tmp /etc/httpd/httpd.conf
+	fi
+	if [ -f /var/lock/subsys/httpd ]; then
+		/usr/sbin/apachectl restart 1>&2
+	fi
+fi
+
 %files
 %defattr(644,root,root,755)
 %doc doc/CHANGELOG doc/README doc/TODO
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/%{name}/connect.conf
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/httpd/%{name}.conf
 %{_datadir}/openldap/schema/extension.schema
-%{_sysconfdir}/httpd/httpd.conf/99_%{name}.conf
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/class
 %{_datadir}/%{name}/inc
