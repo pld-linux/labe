@@ -3,7 +3,7 @@ Summary:	LABE stands for Ldap Address Book Editor
 Summary(pl):	LABE jest edytorem ksi±¿ki adresowej LDAP
 Name:		labe
 Version:	3.3
-Release:	0.%{_subver}.2
+Release:	0.%{_subver}.3
 License:	GPL
 Group:		Applications/Databases
 Source0:	http://www.savoirfairelinux.com/%{name}/%{name}-%{version}-%{_subver}.tgz
@@ -13,9 +13,10 @@ Source2:	%{name}-pl.inc
 Patch0:		%{name}-destdir.patch
 Patch1:		%{name}-pl.patch
 Patch2:		%{name}-path.patch
+Patch3:		%{name}-usability.patch
 URL:		http://www.savoirfairelinux.com/labe/
 BuildArch:	noarch
-Requires:	openldap
+Requires:	php-iconv
 Requires:	php-ldap
 Requires:	php-pcre
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -33,6 +34,7 @@ katalogiem LDAP, kompatybilnego z Mozill±, Evolution i Outlookiem.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
