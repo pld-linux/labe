@@ -1,0 +1,62 @@
+--- labe-3.3-2/setup.sh.fix	2004-08-12 20:31:42.665372296 +0200
++++ labe-3.3-2/setup.sh	2004-08-12 20:30:58.512084616 +0200
+@@ -53,7 +53,7 @@
+ 	#########################################################
+ 	### Getting schemes directory ###########################
+ 	#########################################################
+-	SCHEMES_DIR="${LDAP_ROOT_DIR}/schema"
++	SCHEMES_DIR="/usr/share/openldap/schema"
+ 	echo -en "     Enter the ldap schema directory [${SCHEMES_DIR}]:"
+ 	read TMP_SCHEMES_DIR
+ 	if [[ -n "$TMP_SCHEMES_DIR" ]]; then
+@@ -387,18 +387,18 @@
+ 	### Make sure that the web server accept http upload ####
+ 	#########################################################
+ 	echo -e "${WC}Checking for php.ini in /etc...${NC}"
+-	if [ -e /etc/php.ini ]; then
+-		echo "     /etc/php.ini found!"	
+-		echo -e "${WC}Checking file_uploads in /etc/php.ini...${NC}"
++	if [ -e /etc/php/php.ini ]; then
++		echo "     /etc/php/php.ini found!"	
++		echo -e "${WC}Checking file_uploads in /etc/php/php.ini...${NC}"
+ 
+-        	grep "file_uploads = Off" /etc/php.ini > /dev/null
++        	grep "file_uploads = Off" /etc/php/php.ini > /dev/null
+ 
+         	if [ $? -eq 0 ]; then
+                 	echo "    file_uploads is Off, changing it to On"
+-                	echo "    Saving /etc/php.ini as /etc/php.ini.orig"
+-                	cp -a /etc/php.ini /etc/php.ini.orig
++                	echo "    Saving /etc/php/php.ini as /etc/php/php.ini.orig"
++                	cp -a /etc/php/php.ini /etc/php/php.ini.orig
+ 
+-                	echo "$(sed -e 's/file_uploads = Off/file_uploads = On/' /etc/php.ini)" > /etc/php.ini
++                	echo "$(sed -e 's/file_uploads = Off/file_uploads = On/' /etc/php/php.ini)" > /etc/php/php.ini
+ 
+                 	if [ -x /etc/init.d/httpd ]; then
+ 				echo "Restarting the web server..."
+@@ -412,7 +412,7 @@
+         	fi
+ 
+ 	else
+-		echo -e "    ${RC}/etc/php.ini not found${NC}"
++		echo -e "    ${RC}/etc/php/php.ini not found${NC}"
+ 		ERROR=1
+ 	fi
+ 	### end of upload check ################################
+--- labe-3.3-2/uninstall.sh.fix	2004-08-12 20:31:54.920509232 +0200
++++ labe-3.3-2/uninstall.sh	2004-08-12 20:31:11.574098888 +0200
+@@ -41,11 +41,11 @@
+ 	if [ -e /etc/openldap/slapd.conf ]; then
+ 		echo "     slapd.conf found in /etc/openldap"
+ 
+-		grep "/etc/openldap/schema/extension.schema" /etc/openldap/slapd.conf > /dev/null
++		grep "/usr/share/openldap/schema/extension.schema" /etc/openldap/slapd.conf > /dev/null
+ 
+                 if [ $? -eq 0 ]; then
+                         echo "     Uninstalling extension.schema from /etc/openldap/slapd.conf"
+-			echo "$(sed -e 's/^include.*\/etc\/openldap\/schema\/extension.schema.*$//' /etc/openldap/slapd.conf)" > /etc/openldap/slapd.conf
++			echo "$(sed -e 's/^include.*\/usr\/share\/openldap\/schema\/extension.schema.*$//' /etc/openldap/slapd.conf)" > /etc/openldap/slapd.conf
+ 			echo "     Uninstall compteted"
+ 			echo ""
+ 			echo -e "${LB}Your system is now supposed to be clean!${NC}"
