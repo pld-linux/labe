@@ -57,7 +57,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc doc/CHANGELOG doc/README doc/TODO
-%{_sysconfdir}/%{name}
+%dir %{_sysconfdir}/%{name}
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/%{name}/connect.conf
 %{_datadir}/openldap/schema/extension.schema
 %{_sysconfdir}/httpd/httpd.conf/99_%{name}.conf
 %dir %{_datadir}/%{name}
