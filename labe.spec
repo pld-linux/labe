@@ -1,6 +1,6 @@
 %define		_subver	2
-Summary:	LABE stands for Ldap Address Book Editor.
-Summary(pl):	LABE jest edytorem ksi±¿ki adresowej LDAP.
+Summary:	LABE stands for Ldap Address Book Editor
+Summary(pl):	LABE jest edytorem ksi±¿ki adresowej LDAP
 Name:		labe
 Version:	3.3
 Release:	0.%{_subver}.1
@@ -17,14 +17,13 @@ Requires:	php-ldap
 Requires:	php-pcre
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-
 %description
 LABE is a web application created to administrate a centralised LDAP
 directory, compatible with Mozilla, Evolution and Outlook.
 
 %description -l pl
-LABE jest aplikacja www stworzon± do scentralizowanego administrowania
-katalogiem LDAP, kompatybilnego z Mozilla, Evolution i Outlook.
+LABE jest aplikacj± WWW stworzon± do scentralizowanego administrowania
+katalogiem LDAP, kompatybilnego z Mozill±, Evolution i Outlookiem.
 
 %prep
 %setup -q -n %{name}-%{version}-%{_subver}
