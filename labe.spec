@@ -6,7 +6,7 @@ Version:	3.3
 Release:	0.%{_subver}.3
 License:	GPL
 Group:		Applications/Databases
-Source0:	http://www.savoirfairelinux.com/%{name}/%{name}-%{version}-%{_subver}.tgz
+Source0:	http://www.savoirfairelinux.com/labe/%{name}-%{version}-%{_subver}.tgz
 # Source0-md5:	f7b1adfe0c0194403279d16b96f51d31
 Source1:	%{name}-httpd.conf
 Source2:	%{name}-pl.inc
@@ -15,10 +15,10 @@ Patch1:		%{name}-pl.patch
 Patch2:		%{name}-path.patch
 Patch3:		%{name}-usability.patch
 URL:		http://www.savoirfairelinux.com/labe/
-BuildArch:	noarch
 Requires:	php-iconv
 Requires:	php-ldap
 Requires:	php-pcre
+BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
