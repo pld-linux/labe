@@ -1,0 +1,147 @@
+--- labe/class/labe/labe_util.class.php.fix	2005-02-23 15:08:07.824738616 +0100
++++ labe/class/labe/labe_util.class.php	2005-02-23 14:36:00.315764520 +0100
+@@ -34,14 +34,15 @@
+ 	 *
+ 	 * @return The array decoded
+ 	 */
+-        function imptUTF8($entry) {
+-            for($i = 0; $i < count($entry)-1; $i++) {
+-                for($j = 0; $j <count($this->KeyEntry); $j++) {
+-                    $entry[$i][$this->KeyEntry[$j]][0] = htmlspecialchars(
+-			$this->decode($entry[$i][$this->KeyEntry[$j]][0])
+-		    );
+-                }
+-            }
++	function imptUTF8($entry) {
++		//print mmm;
++		return $entry;
++		for($i = 0; $i < count($entry)-1; $i++) {
++			for($j = 0; $j <count($this->KeyEntry); $j++) {
++				$entry[$i][$this->KeyEntry[$j]][0] = htmlspecialchars($this->decode($entry[$i][$this->KeyEntry[$j]][0]));
++			}
++		}
++		//print dd;
+             return $entry;
+ 	}
+ 
+--- labe/inc/Include.php.fix	2005-02-23 15:08:32.512985432 +0100
++++ labe/inc/Include.php	2005-02-23 14:36:00.392752816 +0100
+@@ -35,7 +35,7 @@
+ 
+     $filter = "(& (objectclass=officePerson))";
+ 
+-    define("MAX_ITEMS_BY_SCREEN","10");
++    define("MAX_ITEMS_BY_SCREEN","23");
+     
+     // +------------------------------------------------------------+
+     // | Creating objects					    |
+@@ -49,5 +49,5 @@
+     $smarty->compile_check = "true";
+     $labe->getInfo($LABE_Name);
+     $labe->setPass($LABE_Pass); 
+-    $labe->encoding = 1;
++    $labe->encoding = 2;
+ ?>
+--- labe/inc/Save.php.fix	2005-02-23 15:09:16.279331936 +0100
++++ labe/inc/Save.php	2005-02-23 14:36:00.392752816 +0100
+@@ -19,7 +19,7 @@
+ 		// | Testing result of connexion new settings			|
+ 		// +------------------------------------------------------------+
+ 		if($connexion) {
+-		    $entries = $labe->SearchALL($connexion,$filter);
++			$entries = $labe->SearchALL($connexion,$filter);
+ 		    header("Location: ".$HTTP_SERVER_VARS["SERVER_ADDRESS"].$HTTP_SERVER_VARS["PHP_SELF"]."?function=List");
+ 		}
+ 		else {
+--- labe/templates/form/detail.tpl.fix	2005-02-23 15:09:40.536644264 +0100
++++ labe/templates/form/detail.tpl	2005-02-23 14:36:00.663711624 +0100
+@@ -129,10 +129,10 @@
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td align=left>
+-		    <input type=text name=homephone  maxlength=25 value="{$HOMEPHONE[entry]}">
++		    <input type=text name=homephone  maxlength=100 value="{$HOMEPHONE[entry]}">
+ 		</td>
+ 		<td align=left>
+-		    <input type=text name=otherfacsimiletelephonenumber maxlength=25 value="{$OTHER_FACSIMILE_TELEPHONENUMBER[entry]}">
++		    <input type=text name=otherfacsimiletelephonenumber maxlength=100 value="{$OTHER_FACSIMILE_TELEPHONENUMBER[entry]}">
+ 		</td>
+             </tr>
+ 
+@@ -146,7 +146,7 @@
+         	<td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td colspan=2 align=left>
+-		    <input type=text name=mobile size=20 maxlength=25 value="{$MOBILE[entry]}">
++		    <input type=text name=mobile size=20 maxlength=100 value="{$MOBILE[entry]}">
+ 		</td>
+        	    </tr>
+ 
+@@ -265,7 +265,7 @@
+ 		<td>&nbsp;</td>
+       		<td>&nbsp;</td>
+       		<td align=left>
+-		    <input type=text name=physicaldeliveryofficename size=20 maxlength=50 value="{$PHYSICAL_DELIVERY_OFFICE_NAME[entry]}">
++		    <input type=text name=physicaldeliveryofficename size=20 maxlength=100 value="{$PHYSICAL_DELIVERY_OFFICE_NAME[entry]}">
+ 		</td>
+ 		<td align=left>
+ 		    <select name=reports width="120">
+--- labe/templates/form/new.tpl.fix	2005-02-23 15:10:03.316181248 +0100
++++ labe/templates/form/new.tpl	2005-02-23 14:36:00.662711776 +0100
+@@ -121,10 +121,10 @@
+                 	<td>&nbsp;</td>
+                 	<td>&nbsp;</td>
+                 	<td align=left>
+-				<input type=text name=homephone  maxlength=25 value="{$HOMEPHONE}">
++				<input type=text name=homephone  maxlength=100 value="{$HOMEPHONE}">
+ 			</td>
+                 	<td align=left>
+-				<input type=text name=otherfacsimiletelephonenumber maxlength=25 value="{$OTHER_FACSIMILE_TELEPHONENUMBER}">
++				<input type=text name=otherfacsimiletelephonenumber maxlength=100 value="{$OTHER_FACSIMILE_TELEPHONENUMBER}">
+ 			</td>
+                 </tr>
+ 
+@@ -138,7 +138,7 @@
+         		<td>&nbsp;</td>
+                 	<td>&nbsp;</td>
+                 	<td colspan=2 align=left>
+-				<input type=text name=mobile size=20 maxlength=25 value="{$MOBILE}">
++				<input type=text name=mobile size=20 maxlength=100 value="{$MOBILE}">
+ 			</td>
+        		</tr>
+ 
+--- labe/templates/list.tpl.fix	2005-02-23 15:10:25.396824480 +0100
++++ labe/templates/list.tpl	2005-02-23 14:36:00.716703568 +0100
+@@ -58,6 +58,7 @@
+ 		    <td>
+ 			<input type="text" name="search">
+ 			<select name="searchcrit">
++				<option value="all">all</option>
+ 	                	    <option value="sn">{$LIST_SEARCH_OPT_SN}</option>
+                   	    <option value="givenname">{$LIST_SEARCH_OPT_GIVENNAME}</option>
+                   	    <option value="organizationname">{$LIST_SEARCH_OPT_ORG}</option>
+--- labe/index.php.fix	2005-02-23 15:07:33.357978360 +0100
++++ labe/index.php	2005-02-23 14:36:00.734700832 +0100
+@@ -1,5 +1,4 @@
+ <?php
+-
+ // +------------------------------------------------------------+
+ // | Main Labe control file				|
+ // |							|
+@@ -117,7 +116,15 @@
+        break;
+ 
+      case "Search":
+-       $filter = "(& (".$HTTP_POST_VARS["searchcrit"]."=".$HTTP_POST_VARS["search"]."*) (& (objectclass=officePerson)))";
++	     echo $HTTP_POST_VARS["searchcrit"];
++       if($HTTP_POST_VARS["searchcrit"] == "all"){
++	       $filter = "(& (|(cn=".$HTTP_POST_VARS["search"]."*)(mail=".$HTTP_POST_VARS["search"]."*)(sn=".$HTTP_POST_VARS["search"]."*)(givenname=".$HTTP_POST_VARS["search"]."*)(o=*".$HTTP_POST_VARS["search"]."*)) (& (objectclass=officePerson)))";
++       		}
++       else
++       {
++	       $filter = "(& (".$HTTP_POST_VARS["searchcrit"]."=".$HTTP_POST_VARS["search"]."*) (& (objectclass=officePerson)))";
++	       echo dd;
++       }
+        include("inc/List.php");
+        break;
+ 
