@@ -1,0 +1,31 @@
+--- labe-3.3-2/Makefile.fix	2004-08-09 21:42:35.848949168 +0200
++++ labe-3.3-2/Makefile	2004-08-09 21:42:40.243281128 +0200
+@@ -9,10 +9,10 @@
+ ROOT = /var/www/html
+ 
+ # Apache web server root directory
+-APACHEROOT = $(ROOT)
++APACHEROOT = $(DESTDIR)$(ROOT)
+ 
+ # Openldap config directory
+-OPENLDAP = /etc/openldap
++OPENLDAP = $(DESTDIR)/etc/openldap
+ 
+ # LDAP schema directory
+ SCHEMA_DIR = $(OPENLDAP)/schema
+@@ -21,13 +21,13 @@
+ TARGETDIR = $(APACHEROOT)/labe
+ 
+ # Directory of the config files of labe
+-CONFIG_DIR = /etc/labe
++CONFIG_DIR = $(DESTDIR)/etc/labe
+ 
+ # templates directory
+ TPL_DIR = $(TARGETDIR)/templates
+ 
+ # Documentation directory
+-DOC_DIR = /usr/share/doc/$(NAME)-$(VERSION)
++DOC_DIR = $(DESTDIR)/usr/share/doc/$(NAME)-$(VERSION)
+ 
+ # PHP script directory
+ INC_DIR = $(TARGETDIR)/inc
