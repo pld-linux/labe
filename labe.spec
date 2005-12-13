@@ -88,8 +88,8 @@ fi
 %defattr(644,root,root,755)
 %doc doc/CHANGELOG doc/README doc/TODO
 %dir %{_sysconfdir}/%{name}
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/%{name}/connect.conf
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/httpd/%{name}.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/connect.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd/%{name}.conf
 %{_datadir}/openldap/schema/extension.schema
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/class
