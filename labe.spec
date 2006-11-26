@@ -1,3 +1,5 @@
+# TODO
+# - webapps
 %define		_subver	2
 Summary:	LABE stands for Ldap Address Book Editor
 Summary(pl):	LABE jest edytorem ksi±¿ki adresowej LDAP
@@ -15,9 +17,9 @@ Patch1:		%{name}-pl.patch
 Patch2:		%{name}-path.patch
 Patch3:		%{name}-usability.patch
 URL:		http://www.savoirfairelinux.com/labe/
-Requires:	php-iconv
-Requires:	php-ldap
-Requires:	php-pcre
+Requires:	php(iconv)
+Requires:	php(ldap)
+Requires:	php(pcre)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
