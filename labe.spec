@@ -2,7 +2,7 @@
 # - webapps
 %define		_subver	2
 Summary:	LABE stands for Ldap Address Book Editor
-Summary(pl.UTF-8):   LABE jest edytorem książki adresowej LDAP
+Summary(pl.UTF-8):	LABE jest edytorem książki adresowej LDAP
 Name:		labe
 Version:	3.3
 Release:	0.%{_subver}.3
